@@ -1,10 +1,7 @@
 package com.jane.toolshop.catalog;
 
-import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.Page;
+import com.jane.toolshop.fixtures.PlaywrightTestCase;
 import com.microsoft.playwright.Tracing;
-import com.microsoft.playwright.junit.UsePlaywright;
-import com.jane.HeadlessChromeOptions;
 import com.jane.toolshop.catalog.pageobjects.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -15,8 +12,7 @@ import org.junit.jupiter.api.TestInfo;
 import java.nio.file.Paths;
 import java.util.List;
 
-@UsePlaywright(HeadlessChromeOptions.class)
-public class AddToCartTest {
+public class AddToCartTest extends PlaywrightTestCase{
 
     SearchComponent searchComponent;
     ProductList productList;
@@ -25,12 +21,12 @@ public class AddToCartTest {
     CheckoutCart checkoutCart;
 
     @BeforeEach
-    void openHomePage(Page page) {
+    void openHomePage() {
         page.navigate("https://practicesoftwaretesting.com");
     }
 
     @BeforeEach
-    void setUp(Page page) {
+    void setUp() {
         searchComponent = new SearchComponent(page);
         productList = new ProductList(page);
         productDetails = new ProductDetails(page);
@@ -39,7 +35,7 @@ public class AddToCartTest {
     }
 
     @BeforeEach
-    void setupTrace(BrowserContext browserContext){
+    void setupTrace(){
         browserContext.tracing().start(
                 new Tracing.StartOptions()
                         .setScreenshots(true)
@@ -49,7 +45,7 @@ public class AddToCartTest {
     }
 
     @AfterEach
-    void recordTrace(TestInfo testInfo, BrowserContext browserContext){
+    void recordTrace(TestInfo testInfo){
         String traceName = testInfo.getDisplayName().replace(" ", "-").toLowerCase();
         browserContext.tracing().stop(
                 new Tracing.StopOptions()
