@@ -53,7 +53,7 @@ public class AddToCartTest {
         String traceName = testInfo.getDisplayName().replace(" ", "-").toLowerCase();
         browserContext.tracing().stop(
                 new Tracing.StopOptions()
-                        .setPath(Paths.get("trace-" + traceName + ".zip"))
+                        .setPath(Paths.get("target/traces/trace-" + traceName + ".zip"))
         );
     }
     @Test
