@@ -1,13 +1,18 @@
 package com.jane.toolshop.catalog;
 
+import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Tracing;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.jane.HeadlessChromeOptions;
 import com.jane.toolshop.catalog.pageobjects.*;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
+import java.nio.file.Paths;
 import java.util.List;
 
 @UsePlaywright(HeadlessChromeOptions.class)
@@ -33,6 +38,24 @@ public class AddToCartTest {
         checkoutCart = new CheckoutCart(page);
     }
 
+    @BeforeEach
+    void setupTrace(BrowserContext browserContext){
+        browserContext.tracing().start(
+                new Tracing.StartOptions()
+                        .setScreenshots(true)
+                        .setSnapshots(true)
+                        .setSources(true)
+        );
+    }
+
+    @AfterEach
+    void recordTrace(TestInfo testInfo, BrowserContext browserContext){
+        String traceName = testInfo.getDisplayName().replace(" ", "-").toLowerCase();
+        browserContext.tracing().stop(
+                new Tracing.StopOptions()
+                        .setPath(Paths.get("trace-" + traceName + ".zip"))
+        );
+    }
     @Test
     void whenCheckingOutASingleItem() {
         searchComponent.searchBy("pliers");
