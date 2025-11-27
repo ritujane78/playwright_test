@@ -1,6 +1,7 @@
 package com.jane.toolshop.catalog.pageobjects;
 
 import com.microsoft.playwright.Page;
+import io.qameta.allure.Step;
 
 public class NavBar {
         private final Page page;
@@ -9,10 +10,12 @@ public class NavBar {
             this.page = page;
         }
 
+        @Step("Open the cart")
         public void openCart() {
              page.getByTestId("nav-cart").click();
         }
 
+        @Step("Open homepage")
         public void openHomePage() {
             page.navigate("https://practicesoftwaretesting.com");
         }

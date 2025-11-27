@@ -1,32 +1,36 @@
 package com.jane.toolshop.catalog;
 
-import com.jane.toolshop.fixtures.PlaywrightTestCase;
+import com.jane.HeadlessChromeOptions;
 import com.jane.toolshop.catalog.pageobjects.ProductList;
 import com.jane.toolshop.catalog.pageobjects.SearchComponent;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.junit.UsePlaywright;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
-@Execution(ExecutionMode.SAME_THREAD)
 @DisplayName("Searching for products")
-public class SearchForProductsTest extends PlaywrightTestCase {
+@Feature("Product catalog")
+@UsePlaywright(HeadlessChromeOptions.class)
+public class SearchForProductsTest  {
 
     @BeforeEach
-    void openHomePage() {
+    void openHomePage(Page page) {
         page.navigate("https://practicesoftwaretesting.com");
     }
 
     @Nested
+    @Story("Searching for products")
     @DisplayName("Searching by keyword")
     class SearchingByKeyword {
 
         @Test
         @DisplayName("When there are matching results")
-        void whenSearchingByKeyword() {
+        void whenSearchingByKeyword(Page page) {
             SearchComponent searchComponent = new SearchComponent(page);
             ProductList productList = new ProductList(page);
 
@@ -39,7 +43,7 @@ public class SearchForProductsTest extends PlaywrightTestCase {
 
         @Test
         @DisplayName("When there are no matching results")
-        void whenThereIsNoMatchingProduct() {
+        void whenThereIsNoMatchingProduct(Page page) {
             SearchComponent searchComponent = new SearchComponent(page);
             ProductList productList = new ProductList(page);
             searchComponent.searchBy("unknown");
@@ -52,7 +56,7 @@ public class SearchForProductsTest extends PlaywrightTestCase {
 
         @Test
         @DisplayName("When the user clears a previous search results")
-        void clearingTheSearchResults() {
+        void clearingTheSearchResults(Page page) {
             SearchComponent searchComponent = new SearchComponent(page);
             ProductList productList = new ProductList(page);
             searchComponent.searchBy("saw");

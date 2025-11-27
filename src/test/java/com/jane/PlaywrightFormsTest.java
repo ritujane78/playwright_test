@@ -3,6 +3,8 @@ package com.jane;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.junit.UsePlaywright;
 import com.microsoft.playwright.options.AriaRole;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,8 @@ import java.nio.file.Paths;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @UsePlaywright(HeadlessChromeOptions.class)
+@DisplayName("Contact form")
+@Feature("Contacts")
 public class PlaywrightFormsTest {
     private Page page;
 
@@ -25,7 +29,8 @@ public class PlaywrightFormsTest {
     }
 
 
-    @DisplayName("Interact with form")
+    @Story("Contact form")
+    @DisplayName("Customers can use the contact form to contact us.")
     @Test
     void whenInteractingWithForm() throws URISyntaxException {
         page.navigate("https://practicesoftwaretesting.com/contact");
@@ -56,6 +61,7 @@ public class PlaywrightFormsTest {
         org.assertj.core.api.Assertions.assertThat(uploadedFile).endsWith("sample-data.txt");
     }
 
+    @Story("Contact form")
     @DisplayName("Mandatory fields")
     @ParameterizedTest
     @ValueSource(strings = {"First Name", "Last Name","Email", "Message"})

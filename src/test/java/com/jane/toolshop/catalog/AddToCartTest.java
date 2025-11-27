@@ -1,18 +1,26 @@
 package com.jane.toolshop.catalog;
 
+import com.jane.HeadlessChromeOptions;
 import com.jane.toolshop.fixtures.PlaywrightTestCase;
+import com.jane.toolshop.fixtures.TakeFinalScreenshots;
+import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Tracing;
 import com.jane.toolshop.catalog.pageobjects.*;
+import com.microsoft.playwright.junit.UsePlaywright;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 
 import java.nio.file.Paths;
 import java.util.List;
 
-public class AddToCartTest extends PlaywrightTestCase{
+
+@DisplayName("Shopping Cart")
+@Feature("Shopping Cart")
+@UsePlaywright(HeadlessChromeOptions.class)
+public class AddToCartTest implements TakeFinalScreenshots {
 
     SearchComponent searchComponent;
     ProductList productList;
@@ -22,11 +30,11 @@ public class AddToCartTest extends PlaywrightTestCase{
 
     @BeforeEach
     void openHomePage() {
-        page.navigate("https://practicesoftwaretesting.com");
+        navBar.openHomePage();
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp(Page page) {
         searchComponent = new SearchComponent(page);
         productList = new ProductList(page);
         productDetails = new ProductDetails(page);
@@ -35,7 +43,7 @@ public class AddToCartTest extends PlaywrightTestCase{
     }
 
     @BeforeEach
-    void setupTrace(){
+    void setupTrace(BrowserContext browserContext){
         browserContext.tracing().start(
                 new Tracing.StartOptions()
                         .setScreenshots(true)
@@ -45,7 +53,7 @@ public class AddToCartTest extends PlaywrightTestCase{
     }
 
     @AfterEach
-    void recordTrace(TestInfo testInfo){
+    void recordTrace(TestInfo testInfo, BrowserContext browserContext){
         String traceName = testInfo.getDisplayName().replace(" ", "-").toLowerCase();
         browserContext.tracing().stop(
                 new Tracing.StopOptions()
@@ -53,11 +61,12 @@ public class AddToCartTest extends PlaywrightTestCase{
         );
     }
     @Test
+    @Story("Checking out a product")
     void whenCheckingOutASingleItem() {
         searchComponent.searchBy("pliers");
         productList.viewProductDetails("Combination Pliers");
 
-        productDetails.increaseQuanityBy(2);
+        productDetails.increaseQuantityBy(2);
         productDetails.addToCart();
 
         navBar.openCart();
@@ -75,10 +84,11 @@ public class AddToCartTest extends PlaywrightTestCase{
     }
 
     @Test
+    @Story("Checking out multiple products")
     void whenCheckingOutMultipleItems() {
         navBar.openHomePage();
         productList.viewProductDetails("Bolt Cutters");
-        productDetails.increaseQuanityBy(2);
+        productDetails.increaseQuantityBy(2);
         productDetails.addToCart();
 
         navBar.openHomePage();
