@@ -1,7 +1,7 @@
 package com.jane.login;
 
 import com.jane.domain.User;
-import com.jane.toolship.fixtures.PlaywrightTestCase;
+import com.jane.toolshop.fixtures.PlaywrightTestCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

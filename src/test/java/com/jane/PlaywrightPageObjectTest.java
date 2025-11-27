@@ -1,6 +1,6 @@
 package com.jane;
 
-import com.jane.toolship.fixtures.PlaywrightTestCase;
+import com.jane.toolshop.fixtures.PlaywrightTestCase;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import org.assertj.core.api.Assertions;

@@ -1,4 +1,4 @@
-package com.jane.toolship.fixtures;
+package com.jane.toolshop.fixtures;
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
