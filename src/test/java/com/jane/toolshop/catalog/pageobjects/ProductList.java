@@ -1,5 +1,6 @@
 package com.jane.toolshop.catalog.pageobjects;
 
+import com.jane.domain.ProductSummary;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 
@@ -24,5 +25,18 @@ public class ProductList {
 
     public String getSearchCompletedMessage() {
         return page.getByTestId("search_completed").textContent();
+    }
+
+    public List<ProductSummary> getProductSummaries(){
+          return page.locator(".card").all()
+                .stream()
+                .map(
+                        product -> {
+                            String productName = product.getByTestId("product-name").textContent().strip();
+                            String productPrice = product.getByTestId("product-price").textContent();
+
+                            return new ProductSummary(productName,productPrice);
+                        }
+                ).toList();
     }
 }
